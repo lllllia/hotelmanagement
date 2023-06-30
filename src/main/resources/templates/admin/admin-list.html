@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>订单管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="/image/x-icon" />
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/xadmin.css">
+  <script src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="/js/xadmin.js"></script>
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+  <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:38px">ဂ</i></a>
+</div>
+<div class="x-body">
+  <div class="layui-row">
+    <form class="layui-form layui-col-md12 x-so">
+      <input class="layui-input" placeholder="开始日" name="start" id="start">
+      <input class="layui-input" placeholder="截止日" name="end" id="end">
+      <div class="layui-input-inline">
+        <select name="contrller">
+          <option>支付状态</option>
+          <option>已支付</option>
+          <option>未支付</option>
+        </select>
+      </div>
+      <div class="layui-input-inline">
+        <select name="contrller">
+          <option>支付方式</option>
+          <option>支付宝</option>
+          <option>微信</option>
+          <option>现金</option>
+        </select>
+      </div>
+      <input type="text" name="username"  placeholder="请输入订单号" autocomplete="off" class="layui-input">
+      <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+    </form>
+  </div>
+  <xblock>
+    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+    <button class="layui-btn" onclick="x_admin_show('添加用户','./admin-add.html')"><i class="layui-icon"></i>添加</button>
+    <span class="x-right" style="line-height:40px">共有数据：21 条</span>
+  </xblock>
+  <table class="layui-table">
+    <thead>
+    <tr>
+      <th>
+        <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+      </th>
+      <th>ID</th>
+      <th>房间号</th>
+      <th>预订人姓名</th>
+      <th>预订手机号</th>
+      <th>预订时间</th>
+      <th>状态</th>
+      <th>操作</th>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='1'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>1</td>
+      <td>205</td>
+      <td>小米</td>
+      <td>13200000000</td>
+      <td>2023-05-21 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn  layui-btn-mini">已预订</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>2</td>
+      <td>306</td>
+      <td>小明</td>
+      <td>13200000000</td>
+      <td>2023-05-11 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn layui-btn-normal layui-btn-mini">已入住</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='3'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>3</td>
+      <td>215</td>
+      <td>小花</td>
+      <td>13200000000</td>
+      <td>2023-05-21 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn  layui-btn-mini">已预订</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='4'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>4</td>
+      <td>315</td>
+      <td>晓华</td>
+      <td>13200000000</td>
+      <td>2023-05-21 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn layui-btn-warm layui-btn-mini">待清扫</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='5'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>5</td>
+      <td>208</td>
+      <td>小红</td>
+      <td>13200000000</td>
+      <td>2023-05-11 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn  layui-btn-mini">已预订</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='6'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>6</td>
+      <td>325</td>
+      <td>美丽</td>
+      <td>13200000000</td>
+      <td>2023-05-21 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn layui-btn-normal layui-btn-mini">已入住</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='7'><i class="layui-icon">&#xe605;</i></div>
+      </td>
+      <td>7</td>
+      <td>301</td>
+      <td>英俊</td>
+      <td>13200000000</td>
+      <td>2023-05-12 11:11:42</td>
+      <td class="td-status">
+        <span class="layui-btn  layui-btn-warm layui-btn-mini">待清扫</span></td>
+      <td class="td-manage">
+        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="入住">
+          <i class="layui-icon">&#xe601;</i>
+        </a>
+        <a onclick="member_stop(this,'10002')" href="javascript:;"  title="退房">
+          <i class="layui-icon">&#x1006;</i>
+        </a>
+        <a title="清扫" onclick="member_del(this,'要删除的id')" href="javascript:;">
+          <i class="layui-icon">&#xe639;</i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="page">
+    <div>
+      <a class="prev" href="">&lt;&lt;</a>
+      <span class="current">1</span>
+      <a class="num" href="">2</a>
+      <a class="num" href="">3</a>
+      <a class="next" href="">&gt;&gt;</a>
+    </div>
+  </div>
+
+</div>
+<script>
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#start' //指定元素
+    });
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#end' //指定元素
+    });
+  });
+
+  /*用户-停用*/
+  function member_stop(obj,id){
+    layer.confirm('确认操作？',function(index){
+
+      if($(obj).attr('title')=='入住'){
+
+        //发异步把用户状态进行更改
+        $(obj).attr('title','退房')
+        $(obj).find('i').html('&#xe62f;');
+
+        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-normal').html('已入住');
+        layer.msg('已成功!',{icon: 1,time:1000});
+
+      }else if($(obj).attr('title')=='退房'){
+
+        //发异步把用户状态进行更改
+        $(obj).attr('title','退房待清扫')
+        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-warm').html('待清扫');
+        layer.msg('已成功!',{icon: 1,time:1000});
+      }
+    });
+  }
+
+  /*用户-删除*/
+  function member_del(obj,id){
+    layer.confirm('确认清扫？',function(index){
+      //发异步删除数据
+      $(obj).parents("tr").remove();
+      layer.msg('已成功!',{icon:1,time:1000});
+    });
+  }
+
+
+
+  function delAll (argument) {
+
+    var data = tableCheck.getData();
+
+    layer.confirm('确认要删除吗？'+data,function(index){
+      //捉到所有被选中的，发异步进行删除
+      layer.msg('删除成功', {icon: 1});
+      $(".layui-form-checked").not('.header').parents('tr').remove();
+    });
+  }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>订单管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="/image/x-icon" />
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/xadmin.css">
+  <script src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="/js/xadmin.js"></script>
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+  <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+    <i class="layui-icon" style="line-height:38px">ဂ</i></a>
+</div>
+<div class="x-body">
+  <div class="layui-row">
+
+  </div>
+  <xblock>
+
+  </xblock>
+  <table class="layui-table">
+    <thead>
+    <tr>
+      <th></th>
+      <th>ID</th>
+      <th>房间号</th>
+      <th>预订人姓名</th>
+      <th>预订时间</th>
+      <th>状态</th>
+      <th>操作</th>
+    </thead>
+    <tbody id="order-table-body">
+    <!-- 数据将动态插入这里 -->
+    </tbody>
+  </table>
+  <div class="page">
+    <div>
+      <a class="prev" href="">&lt;&lt;</a>
+      <span class="current">1</span>
+      <a class="num" href="">2</a>
+      <a class="num" href="">3</a>
+      <a class="next" href="">&gt;&gt;</a>
+    </div>
+  </div>
+
+</div>
+<script>
+  function getClassByStatus(status) {
+    if (status === '已预订') {
+      return 'layui-btn layui-btn-mini';
+    } else if (status === '已入住') {
+      return 'layui-btn layui-btn-normal';
+    } else if (status === '待清扫') {
+      return 'layui-btn layui-btn-warm';
+    }
+  }
+
+</script>
+<script>
+  // 从后端获取订单数据
+  function fetchOrderData() {
+    return fetch('/your-backend-order-api-endpoint')
+            .then(response => response.json())
+            .then(data => data.orderData);
+  }
+  // 动态生成订单表格的行
+  function generateOrderRows() {
+    const tableBody = document.querySelector('#order-table-body');
+
+    // 清空表格内容
+    tableBody.innerHTML = '';
+
+    fetchOrderData().then(orderData => {
+      // 生成每个订单的行
+      orderData.forEach(order => {
+        // 获取房间状态
+        console.log(orderData);
+
+          const row = document.createElement('tr');
+          row.innerHTML = `
+
+            <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="${order.id}"><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>${order.id}</td>
+            <td>${order.roomId}</td>
+            <td>${order.reserverName}</td>
+            <td>${new Date(order.reserveTime).toLocaleString()}</td>
+            <td>
+           <span class="${order.status === '已预订' ? 'layui-btn layui-btn-mini' : (order.status === '已入住' ? 'layui-btn layui-btn-normal' : 'layui-btn layui-btn-warm')}">${order.status}</span>
+            </td>
+            <td class="td-manage">
+              <a onclick="member_stop(this,'${order.id}','${order.roomId}')" href="javascript:;"  title="入住">
+                <i class="layui-icon">&#xe601;</i>
+              </a>
+              <a onclick="member_stop(this,'${order.id}','${order.roomId}')" href="javascript:;"  title="退房">
+                <i class="layui-icon">&#xe66f;</i>
+              </a>
+              <a onclick="member_stop(this,'${order.id}','${order.roomId}')" href="javascript:;" title="清扫">
+                <i class="layui-icon">&#xe639;</i>
+              </a>
+              <a title="删除" onclick="member_del(this,'${order.id}','${order.roomId}')" href="javascript:;">
+                <i class="layui-icon">&#x1006;</i>
+              </a>
+            </td>
+          `;
+
+          tableBody.appendChild(row);
+        });
+      });
+  }
+  // 初始化页面
+  generateOrderRows();
+</script>
+
+<script>
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#start' //指定元素
+    });
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#end' //指定元素
+    });
+
+  });
+  function updateRoomStatus(rid,roomNumber, newStatus) {
+    // 发送异步请求到后端，更新房间状态
+    // 可以使用fetch或其他类似的方法发送请求
+    // 示例使用fetch发送POST请求，你需要根据实际情况进行修改
+    fetch('/api/updateRoomStatus', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        rid:rid,
+        roomNumber: roomNumber,
+        status: newStatus
+      })
+
+    })
+            .then(response => response.json())
+            .then(data => {
+              // 处理请求成功后的逻辑
+              console.log('房间状态已更新:', data);
+            })
+            .catch(error => {
+              // 处理请求失败的逻辑
+              console.error('更新房间状态时发生错误:', error);
+            });
+  }
+  /*用户-清扫*/
+  function member_del1(obj, id, roomid) {
+    layer.confirm('确认清扫？', function(index) {
+      // 发送异步请求到后端更新订单状态为“空闲”
+      fetch(`/clean`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          rid:rid,
+          roomNumber: roomNumber,
+          status: newStatus
+        })
+
+      })
+              .then(response => {
+                if (response.ok) {
+                  // 更新成功，移除订单行
+                  $(obj).parents("tr").remove();
+                  layer.msg('已成功!', { icon: 1, time: 1000 });
+                  updateRoomStatus(id, roomid, '空闲');
+                } else {
+                  // 更新失败，提示错误信息
+                  layer.msg('删除失败1', { icon: 2 });
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                layer.msg('删除失败', { icon: 2 });
+              });
+    });
+  }
+
+  /*用户-停用*/
+  function member_stop(obj,id,roomid){
+    layer.confirm('确认操作？',function(index){
+
+      if($(obj).attr('title')=='入住'){
+
+        //发异步把用户状态进行更改
+        $(obj).attr('title','退房')
+        $(obj).find('i').html('&#xe62f;');
+
+        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-normal').html('已入住');
+        layer.msg('已成功!',{icon: 1,time:1000});
+        updateRoomStatus(id, roomid,'已入住');
+
+      }else if($(obj).attr('title')=='退房'){
+
+        //发异步把用户状态进行更改
+        $(obj).attr('title','退房待清扫')
+        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-warm').html('待清扫');
+        layer.msg('已成功!',{icon: 1,time:1000});
+        updateRoomStatus(id, roomid,'待清扫');
+      }else if($(obj).attr('title')=='清扫'){
+
+        //发异步把用户状态进行更改
+        $(obj).parents("tr").remove();
+        layer.msg('已成功!',{icon: 1,time:1000});
+        updateRoomStatus(id, roomid,'空闲');
+      }
+    });
+  }
+
+  /*用户-删除*/
+  function member_del(obj, id,roomid) {
+    layer.confirm('确认删除？', function(index) {
+      // 发送异步请求到后端删除预定信息
+      fetch(`/delete-reserve?id=${id}`, {
+        method: 'DELETE'
+      })
+              .then(response => {
+                if (response.ok) {
+                  // 删除成功，移除订单行
+                  $(obj).parents("tr").remove();
+                  layer.msg('已成功!', { icon: 1, time: 1000 });
+                  updateRoomStatus(id,roomid, '空闲');
+                } else {
+                  // 删除失败，提示错误信息
+                  layer.msg('删除失败', { icon: 2 });
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                layer.msg('删除失败', { icon: 2 });
+              });
+    });
+  }
+
+
+  function delAll() {
+    var data = tableCheck.getData();
+
+    layer.confirm('确认要删除吗？' + data, function(index) {
+      // 发送异步请求到后端删除预定信息
+      fetch('/your-backend-delete-api-endpoint', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+              .then(response => response.json())
+              .then(result => {
+                if (result.success) {
+                  layer.msg('删除成功', {icon: 1});
+                  $(".layui-form-checked").not('.header').parents('tr').remove();
+                } else {
+                  layer.msg('删除失败', {icon: 2});
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                layer.msg('删除失败', {icon: 2});
+              });
+    });
+  }
+
+</script>
+</body>
+
+</html>

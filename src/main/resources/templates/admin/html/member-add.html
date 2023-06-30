@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-L-admin1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-body layui-anim layui-anim-up">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">
+                    <span class="x-red">*</span>姓名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_username" name="username" required
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">
+                    <span class="x-red">*</span>性别
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_gender" name="gender" required
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+            <label for="L_username" class="layui-form-label">
+                <span class="x-red">*</span>电话
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_phonenumber" name="phonenumber" required
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+          <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red">*</span>邮箱
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="email" required
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+            <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">
+                    <span class="x-red">*</span>地址
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_address" name="address" required
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn" onclick="addEmployee()">
+                    增加
+                </button>
+            </div>
+
+      </form>
+    </div>
+    <script>
+        function addEmployee() {
+            // 获取表单数据
+            const username = document.getElementById('L_username').value;
+            const gender = document.getElementById('L_gender').value;
+            const phonenumber = document.getElementById('L_phonenumber').value;
+            const email = document.getElementById('L_email').value;
+            const address = document.getElementById('L_address').value;
+            const state = "空闲中";
+            // 构造请求体对象
+            const employeeData = {
+                username: username,
+                gender: gender,
+                phonenumber: phonenumber,
+                email: email,
+                address: address,
+                state: state
+            };
+
+            // 发送异步请求到后端保存员工信息
+            fetch('/your-backend-save-employee-api-endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(employeeData)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        layer.msg('添加成功', { icon: 1, time: 1000 });
+                        alert("添加成功！")
+                        window.close();
+                    } else {
+                        layer.msg('添加失败', { icon: 2 });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    layer.msg('添加失败', { icon: 2 });
+                });
+        }
+    </script>
+
+  </body>
+
+</html>

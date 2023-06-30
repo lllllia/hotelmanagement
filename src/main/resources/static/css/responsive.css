@@ -1,0 +1,173 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 
+
+	Template Name: Stetho - Hotel Multipage Clean Bootstrap HTML5 Website Template
+	Author: Rainbow Design
+	Author URL: http://rainbowdesign.in/
+	
+*/
+
+/* Medium Devices, Desktops */
+@media (max-width: 1199px) {
+.header-navigation .navbar-nav .nav-link {
+	padding: 16px 11px;
+	font-size: 11px;
+}
+.slider .carousel-item img {
+	height: 500px;
+}
+}
+@media (max-width: 992px) {
+.header-call-us i, .header-call-us ul li a {
+	font-size: 12px;
+}
+.header-request {
+	width: 160px;
+}
+}
+@media (max-width: 991px) {
+.logo {
+	text-align: center;
+	margin-bottom: 8px;
+}
+.logo .navbar-brand {
+	margin-right: 0px;
+}
+.header-upper-bar {
+	padding: 6px 0px;
+}
+.header-navigation .navbar-collapse {
+	position: absolute;
+	top: 42px;
+	background-color: rgb(51, 51, 51);
+	z-index: 9;
+	width: 250px;
+}
+.header-navigation .navbar-collapse .navbar-nav li {
+	width: 100%;
+}
+.gj-datepicker-bootstrap [role="right-icon"] button {
+	height: 36px;
+}
+.slider .carousel-control-next, .slider .carousel-control-prev {
+	display: none;
+}
+.center-search {
+	padding: 10px;
+}
+.form-style-1 input[type="text"], .form-style-1 input[type="email"], .form-style-1 input[type="password"], .form-style-1 select {
+	height: 36px;
+}
+.carousel-fade .carousel-item img {
+	height: 400px;
+}
+.app-img img {
+	position: relative;
+}
+.list-box-img {
+	width: 100%;
+}
+.header-call-us ul li {
+	margin-right: 12px;
+}
+.header-call-us {
+	float: none;
+	text-align: center;
+	margin-top: 10px;
+}
+.header-call-us ul {
+	float: none;
+}
+.header-call-us ul li .text-holder {
+	text-align: left;
+}
+}
+/* Small Devices, Tablets */
+@media (max-width: 767px) {
+.header-call-us i, .header-call-us ul li a {
+	font-size: 12px;
+}
+.slider {
+	background-image: url(../img/slider/slider-1.jpg);
+	background-repeat: no-repeat;
+	background-position: top center;
+	background-size: cover;
+}
+.slider .slide {
+	display: none;
+}
+.search-area {
+	position: relative;
+	padding: 30px 0px;
+}
+.inner-banner .breadcrumb {
+	float: left;
+}
+.inner-banner .col-lg-8 {
+	margin-bottom: 10px;
+}
+.list-box .list-box-carousel {
+	width: 100%;
+}
+.features-tabs .nav-tabs .nav-link {
+	font-size: 14px;
+}
+.comments-area .comment-box {
+	margin-left: 0px;
+}
+.team-box .team-des {
+	width: 100%;
+}
+.header-call-us {
+	text-align: left;
+}
+.header-call-us ul li {
+	margin-bottom: 20px;
+}
+.header-call-us ul li:last-child {
+	margin-bottom: 0px;
+}
+}
+
+/* Extra Small Devices, Phones */
+@media (max-width: 575px) {
+.header-call-us {
+	float: right;
+}
+.header-right-link ul li a {
+	font-size: 10px;
+}
+.header-call-us ul li a, .header-call-us i {
+	font-size: 14px;
+}
+.header-call-us ul li .iocn-holder i {
+	font-size: 30px;
+}
+.hotel-featured li {
+	width: 100%;
+	padding-bottom: 18px;
+}
+.hotel-featured li:last-child {
+	padding-bottom: 0px;
+}
+.review-item {
+	display: inline-block;
+}
+.review-item img {
+	margin-bottom: 8px;
+}
+.review-item .media-body {
+	width: 100%;
+}
+.forgot-password {
+	text-align: left !important;
+	margin-bottom: 15px;
+}
+.comments-area .comment .comment-inner .rating {
+	position: relative;
+	right: 0px;
+	top: 0px;
+}
+}
